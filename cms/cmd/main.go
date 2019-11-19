@@ -1,14 +1,15 @@
 package main
 
 import (
-	"goprojects/cms"
-	"os"
+	"net/http"
+
+	cms "goprojects/cms3.4"
 )
 
 func main() {
-	p := &cms.Page{
-		Title:   "Hello, World!",
-		Content: "This is the body of our webpage",
-	}
-	cms.Tmpl.ExecuteTemplate(os.Stdout, "index", p)
+	http.HandleFunc("/", cms.ServeIndex)
+	http.HandleFunc("/page/", cms.ServePage)
+	http.HandleFunc("/post/", cms.ServePost)
+	http.HandleFunc("/new", cms.HandleNew)
+	http.ListenAndServe(":3000", nil)
 }
